@@ -1,0 +1,23 @@
+{
+  "name": "serverless-next",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "serverless offline",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-serverless-express": "^3.0.1",
+    "next": "^2.4.0",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "serverless": "^1.14.0",
+    "serverless-offline": "^3.14.0"
+  }
+}
