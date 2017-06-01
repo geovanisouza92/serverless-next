@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "next build",
     "start": "serverless offline",
+    "predeploy": "next build",
+    "deploy": "serverless deploy:function",
+    "predeploy:all": "next build",
+    "deploy:all": "serverless deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
