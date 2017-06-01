@@ -10,7 +10,7 @@
     "deploy": "serverless deploy:function",
     "predeploy:all": "next build",
     "deploy:all": "serverless deploy",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "serverless invoke test"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "serverless": "^1.14.0",
+    "serverless-jest-plugin": "^0.1.4",
     "serverless-offline": "^3.14.0"
   }
 }
