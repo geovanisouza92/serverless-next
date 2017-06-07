@@ -1,0 +1,26 @@
+{
+  "name": "serverless-next",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "concurrently -p '{name}' -n 'next,serverless' -c 'gray,yellow' \"next\" \"serverless offline --port 4000\"",
+    "prestart": "next build",
+    "start": "cross-env NODE_ENV=production serverless offline",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cross-env NODE_ENV=production sh -c 'next build && serverless package'",
+    "deploy": "serverless deploy"
+  },
+  "devDependencies": {
+    "concurrently": "^3.4.0",
+    "cross-env": "^5.0.0",
+    "serverless": "^1.14.0",
+    "serverless-offline": "^3.14.1"
+  },
+  "dependencies": {
+    "aws-serverless-express": "^3.0.1",
+    "isomorphic-fetch": "^2.2.1",
+    "next": "^2.4.2",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  }
+}
