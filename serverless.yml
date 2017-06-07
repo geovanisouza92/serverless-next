@@ -46,21 +46,48 @@ provider:
 #    variable1: value1
 
 package:
-  exclude:
-    - node_modules/**
-    - pages/**
-    - package.json
-  include:
-    - handler.js
-    - .next
+  individually: true
 
 functions:
   hello:
-    handler: handler.hello
+    handler: aws/hello.handler
+    events:
+      - http:
+          method: any
+          path: /hello
+    package:
+      exclude:
+        - ./**
+      include:
+        - aws/hello.js
+
+  web:
+    handler: aws/web.handler
     events:
       - http:
           method: get
-          path: /{proxy+}
+          path: /
+      - http:
+          method: get
+          path: /_next/{proxy+}
+    package:
+      exclude:
+        - ./**
+      include:
+        - aws/web.js
+        - .next/**
+
+  api:
+    handler: aws/api.handler
+    events:
+      - http:
+          method: any
+          path: /a/{proxy+}
+    package:
+      exclude:
+        - ./**
+      include:
+        - aws/api.js
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

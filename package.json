@@ -2,26 +2,29 @@
   "name": "serverless-next",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "build": "next build",
-    "start": "serverless offline",
-    "predeploy": "next build",
-    "deploy": "serverless deploy:function",
-    "predeploy:all": "next build",
-    "deploy:all": "serverless deploy",
-    "test": "serverless invoke test"
+    "start": "concurrently -p '{name}' -n 'next,serverless' -c 'gray.bgWhite,yellow.bgBlue' \"next\" \"serverless offline --port 4000\"",
+    "build": "cross-env-shell NODE_ENV=production \"next build && serverless package\"",
+    "test": "jest",
+    "emulate": "cross-env-shell NODE_ENV=production \"next build && serverless offline\"",
+    "deploy": "serverless deploy"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Geovani de Souza <geovanisouza92@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "aws-serverless-express": "^3.0.1",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "isomorphic-fetch": "^2.2.1",
     "next": "^2.4.0",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "short-unique-id": "^1.1.0"
   },
   "devDependencies": {
+    "concurrently": "^3.4.0",
+    "cross-env": "^5.0.0",
+    "jest": "^20.0.4",
     "serverless": "^1.14.0",
     "serverless-jest-plugin": "^0.1.4",
     "serverless-offline": "^3.14.0"
