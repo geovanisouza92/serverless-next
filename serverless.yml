@@ -55,6 +55,7 @@ functions:
       - http:
           method: any
           path: /hello
+          authorizer: checkToken
     package:
       exclude:
         - ./**
@@ -81,13 +82,41 @@ functions:
     handler: aws/api.handler
     events:
       - http:
-          method: any
+          method: get
           path: /a/{proxy+}
+      - http:
+          method: post
+          path: /a/
+          authorizer: checkToken
     package:
       exclude:
         - ./**
       include:
         - aws/api.js
+
+  login:
+    handler: aws/login.handler
+    events:
+      - http:
+          method: post
+          path: /login
+    package:
+      exclude:
+        - ./**
+      include:
+        - aws/login.js
+        - auth/login.js
+        - auth/_config.js
+
+  checkToken:
+    handler: aws/checkToken.handler
+    package:
+      exclude:
+        - ./**
+      include:
+        - aws/checkToken.js
+        - auth/checkToken.js
+        - auth/_config.js
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
