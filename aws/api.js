@@ -1,7 +1,7 @@
 'use strict'
 
 const adapter = require('aws-serverless-express')
-const api = require('../api')
+const api = require('../lib/api')
 
 const server = adapter.createServer(api)
 

@@ -63,7 +63,7 @@ export default class Index extends React.Component {
   }
 
   _login () {
-    fetch(`${API_ENDPOINT}/login`, {
+    fetch(`${API_ENDPOINT}/auth`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

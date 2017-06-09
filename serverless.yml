@@ -55,7 +55,7 @@ functions:
       - http:
           method: any
           path: /hello
-          authorizer: checkToken
+          authorizer: authorization
 
   web:
     handler: aws/web.handler
@@ -75,21 +75,21 @@ functions:
     events:
       - http:
           method: get
-          path: /a/{proxy+}
+          path: /a/{id}
       - http:
           method: post
           path: /a/
-          authorizer: checkToken
+          authorizer: authorization
 
-  login:
-    handler: aws/login.handler
+  authentication:
+    handler: aws/authentication.handler
     events:
       - http:
           method: post
-          path: /login
+          path: /auth
 
-  checkToken:
-    handler: aws/checkToken.handler
+  authorization:
+    handler: aws/authorization.handler
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

@@ -1,8 +1,8 @@
-const login = require('../auth/login')
+const authentication = require('../lib/auth/authentication')
 
 module.exports.handler = (event, context, callback) => {
   const body = JSON.parse(event.body)
-  const token = login(body.username, body.password)
+  const token = authentication.authenticate(body.username, body.password)
 
   if (token) {
     return callback(null, {
