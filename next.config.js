@@ -6,9 +6,11 @@ const apiEndpoint = process.env.NODE_ENV === 'production'
 
 module.exports = {
   webpack: config => {
-    config.plugins.push(new webpack.DefinePlugin({
-      API_ENDPOINT: JSON.stringify(apiEndpoint)
-    }))
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        API_ENDPOINT: JSON.stringify(apiEndpoint)
+      })
+    )
     return config
   }
 }

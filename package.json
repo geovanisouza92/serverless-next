@@ -23,11 +23,16 @@
     "short-unique-id": "^1.1.0"
   },
   "devDependencies": {
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.5.2",
+    "babel-preset-stage-0": "^6.24.1",
     "concurrently": "^3.4.0",
     "cross-env": "^5.0.0",
     "jest": "^20.0.4",
     "serverless": "^1.14.0",
     "serverless-jest-plugin": "^0.1.4",
-    "serverless-offline": "^3.14.0"
+    "serverless-offline": "^3.14.0",
+    "serverless-plugin-webpack": "^1.1.0",
+    "webpack": "^2.5.0"
   }
 }
