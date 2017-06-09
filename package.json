@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "start": "concurrently -p '{name}' -n 'next,serverless' -c 'gray.bgWhite,yellow.bgBlue' \"next\" \"serverless offline --port 4000\"",
+    "lint": "standard",
     "build": "cross-env-shell NODE_ENV=production \"next build && serverless package\"",
     "test": "jest",
     "emulate": "cross-env-shell NODE_ENV=production \"next build && serverless offline\"",
@@ -33,6 +34,26 @@
     "serverless-jest-plugin": "^0.1.4",
     "serverless-offline": "^3.14.0",
     "serverless-plugin-webpack": "^1.1.0",
+    "standard": "^10.0.2",
     "webpack": "^2.5.0"
+  },
+  "standard": {
+    "globals": [
+      "afterAll",
+      "afterEach",
+      "beforeAll",
+      "beforeEach",
+      "describe",
+      "describe.only",
+      "describe.skip",
+      "require.requireActual",
+      "require.requireMock",
+      "test",
+      "test.only",
+      "test.skip",
+      "expect",
+      "jest",
+      "it"
+    ]
   }
 }
