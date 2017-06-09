@@ -1,5 +1,7 @@
 const authorization = require('../lib/auth/authorization')
 
+// Create a AWS IAM policy object
+// NOTE: Could accept additional data on context
 const generatePolicy = (principalId, Effect, Resource) => ({
   principalId,
   policyDocument: {
@@ -17,7 +19,10 @@ const generatePolicy = (principalId, Effect, Resource) => ({
 })
 
 module.exports.handler = (event, context, callback) => {
+  // Get the JWT token
   const token = event.authorizationToken && event.authorizationToken.split(' ')[1]
+
+  // Verify token
   if (authorization.isValid(token)) {
     callback(null, generatePolicy('user', 'Allow', event.methodArn))
   } else {
