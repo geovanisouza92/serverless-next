@@ -1,13 +1,11 @@
-/* global API_ENDPOINT */
-
 import React from 'react'
-import fetch from 'isomorphic-fetch'
+import client from '../lib/api/client'
 
 export default class Index extends React.Component {
   constructor (props) {
     super(props)
     this.handleClick = this._handleClick.bind(this)
-    this.login = this._login.bind(this)
+    this.handleLogin = this._handleLogin.bind(this)
     this.state = {
       token: null,
       message: 'not so short urls'
@@ -17,7 +15,7 @@ export default class Index extends React.Component {
   render () {
     return (
       <div className='container'>
-        <button className='action' type='button' onClick={this.login}>Login</button>
+        <button className='action' type='button' onClick={this.handleLogin}>Login</button>
         <h1 className='title'>{this.state.message}</h1>
         <div className='group'>
           <input className='url' type='url' />
@@ -62,35 +60,20 @@ export default class Index extends React.Component {
     )
   }
 
-  _login () {
-    fetch(`${API_ENDPOINT}/auth`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+  _handleLogin () {
+    client.Auth
+      .login({
         username: 'admin',
         password: 'admin'
       })
-    })
-    .then(res => res.json())
-    .then(data => this.setState(
-      prevState => ({ ...prevState, token: data.token })
-    ))
+      .then(data => this.setState(
+        prevState => ({ ...prevState, token: data.token })
+      ))
   }
 
   _handleClick () {
-    const options = {}
-
-    if (this.state.token) {
-      options.headers = {
-        Authorization: `Bearer ${this.state.token}`
-      }
-    }
-
-    fetch(`${API_ENDPOINT}/hello`, options)
-      .then(res => res.json())
+    client.Fake
+      .hello()
       .then(data => this.setState(
         prevState => ({ ...prevState, message: data.message })
       ))
