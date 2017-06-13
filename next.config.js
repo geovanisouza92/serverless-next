@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 
 const apiEndpoint = process.env.NODE_ENV === 'production'
-  ? ''
+  ? '' // TODO: App domain
   : 'http://localhost:4000'
 
 module.exports = {

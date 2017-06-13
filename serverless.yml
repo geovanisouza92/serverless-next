@@ -66,12 +66,20 @@ functions:
     handler: aws/api.handler
     events:
       - http:
-          method: get
-          path: /a/{id}
-      - http:
-          method: post
-          path: /a/
+          method: any
+          path: /n/{proxy+}
           authorizer: authorization
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DescribeTable
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+        Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
   authentication:
     handler: aws/authentication.handler
