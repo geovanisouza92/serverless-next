@@ -13,7 +13,6 @@ const generatePolicy = (principalId, Effect, Resource) => ({
   },
   context: {
     // NOTE: Could accept additional data on context
-    foo: 'bar'
   }
 })
 

@@ -3,6 +3,8 @@ const authentication = require('../lib/auth/authentication')
 module.exports.handler = (event, context, callback) => {
   // Get credentials and authenticate user
   const credentials = JSON.parse(event.body)
+
+  // Authenticate credentials and return token, or null
   const token = authentication.authenticate(credentials.username, credentials.password)
 
   var res
