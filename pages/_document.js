@@ -15,13 +15,12 @@ export default class Doc extends Document {
       <html>
         <Head>
           <style dangerouslySetInnerHTML={{ __html: globalStylesheet }} />
-          <style>{`
+          <style jsx>{`
             
-            body {
-              background-color: #73CF5D;
-              font-family: sans-serif;
+            html, body {
+              display: flex;
             }
-            
+
           `}</style>
         </Head>
         <body>
