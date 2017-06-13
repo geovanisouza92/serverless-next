@@ -1,7 +1,6 @@
 const authorization = require('../lib/auth/authorization')
 
 // Create a AWS IAM policy object
-// NOTE: Could accept additional data on context
 const generatePolicy = (principalId, Effect, Resource) => ({
   principalId,
   policyDocument: {
@@ -13,7 +12,7 @@ const generatePolicy = (principalId, Effect, Resource) => ({
     }]
   },
   context: {
-    // NOTE: Additional data
+    // NOTE: Could accept additional data on context
     foo: 'bar'
   }
 })
