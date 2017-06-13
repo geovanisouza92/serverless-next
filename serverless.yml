@@ -49,25 +49,6 @@ package:
   individually: true
 
 functions:
-  hello:
-    handler: aws/hello.handler
-    events:
-      - http:
-          method: any
-          path: /hello
-          authorizer: authorization
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:DescribeTable
-          - dynamodb:Query
-          - dynamodb:Scan
-          - dynamodb:GetItem
-          - dynamodb:PutItem
-          - dynamodb:UpdateItem
-          - dynamodb:DeleteItem
-        Resource: "arn:aws:dynamodb:us-east-1:*:*"
-
   web:
     handler: aws/web.handler
     events:

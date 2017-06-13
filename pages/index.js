@@ -4,7 +4,6 @@ import client from '../lib/api/client'
 export default class Index extends React.Component {
   constructor (props) {
     super(props)
-    this.handleClick = this._handleClick.bind(this)
     this.handleLogin = this._handleLogin.bind(this)
     this.state = {
       token: null,
@@ -19,7 +18,7 @@ export default class Index extends React.Component {
         <h1 className='title'>{this.state.message}</h1>
         <div className='group'>
           <input className='url' type='url' />
-          <button className='action' type='button' onClick={this.handleClick}>Short</button>
+          {/*<button className='action' type='button' onClick={this.handleClick}>Short</button>*/}
         </div>
         <style jsx>{`
           div.container {
@@ -68,14 +67,6 @@ export default class Index extends React.Component {
       })
       .then(data => this.setState(
         prevState => ({ ...prevState, token: data.token })
-      ))
-  }
-
-  _handleClick () {
-    client.Fake
-      .hello()
-      .then(data => this.setState(
-        prevState => ({ ...prevState, message: data.message })
       ))
   }
 }
