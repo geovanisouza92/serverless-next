@@ -7,5 +7,5 @@ module.exports = (client, TableName) => userId => {
     }
   }
 
-  return client.query(params).promise().then(res => res.Items)
+  return client.query(params).promise()
 }

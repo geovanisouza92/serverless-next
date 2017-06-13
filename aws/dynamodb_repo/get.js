@@ -7,5 +7,5 @@ module.exports = (client, TableName) => (userId, noteId) => {
     }
   }
 
-  return client.get(params).promise().then(res => res.Item)
+  return client.get(params).promise()
 }

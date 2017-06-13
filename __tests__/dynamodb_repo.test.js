@@ -17,10 +17,12 @@ describe('DynamoDB repository', () => {
       .then(() => {
         // List
         return repo.list(userId)
-          .then(item => {
-            expect(item.length).toEqual(1)
-            expect(item[0].content).toEqual(content)
-            return item[0]
+          .then(found => {
+            expect(found.Items.length).toBeGreaterThan(0)
+            // NOTE: Pick the latest item, to avoid conflict with other items
+            const item = found.Items.sort((a, b) => a.createdAt - b.createdAt)[found.Items.length - 1]
+            expect(item.content).toEqual(content)
+            return item
           })
       }).then(item => {
         // Update
@@ -29,14 +31,12 @@ describe('DynamoDB repository', () => {
       }).then(() => {
         // Get
         return repo.get(userId, noteId)
-          .then(item => {
-            expect(item.content).toEqual(content + ' updated')
+          .then(found => {
+            expect(found.Item.content).toEqual(content + ' updated')
           })
       }).then(() => {
         // Destroy
         return repo.destroy(userId, noteId)
       })
-
-      // TODO: Check if dynamodb is empty?
   })
 })
