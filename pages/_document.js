@@ -1,6 +1,7 @@
 import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
 import flush from 'styled-jsx/server'
+import globalStylesheet from 'styles/global.css'
 
 export default class Doc extends Document {
   static getInitialProps ({ renderPage }) {
@@ -13,12 +14,12 @@ export default class Doc extends Document {
     return (
       <html>
         <Head>
+          <style dangerouslySetInnerHTML={{ __html: globalStylesheet }} />
           <style>{`
             
             body {
               background-color: #73CF5D;
               font-family: sans-serif;
-              margin: 0;
             }
             
           `}</style>
