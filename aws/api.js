@@ -8,7 +8,7 @@ const userIdGetter = req => req.requestContext.authorizer.claims.sub
 
 module.exports.handler = (event, context, callback) => {
   // Build a concrete repository (DynamoDB as storage)
-  const repo = repoFactory('notes')
+  const repo = repoFactory()
 
   // Create a server for a API instance
   const server = adapter.createServer(apiFactory(repo, userIdGetter))

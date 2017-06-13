@@ -4,7 +4,7 @@ const repoFactory = require('../aws/dynamodb_repo')
 
 describe('DynamoDB repository', () => {
   it('works with local DynamoDB', () => {
-    const repo = repoFactory('notes')
+    const repo = repoFactory()
     const userId = 'USER-SUB-1234'
     const content = 'hello world'
     var noteId = null
@@ -18,6 +18,7 @@ describe('DynamoDB repository', () => {
         // List
         return repo.list(userId)
           .then(item => {
+            expect(item.length).toEqual(1)
             expect(item[0].content).toEqual(content)
             return item[0]
           })
