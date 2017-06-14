@@ -1,72 +1,31 @@
 import React from 'react'
-import client from '../lib/api/client'
 
 export default class Index extends React.Component {
-  constructor (props) {
-    super(props)
-    this.handleLogin = this._handleLogin.bind(this)
-    this.state = {
-      token: null,
-      message: 'not so short urls'
-    }
-  }
-
   render () {
     return (
-      <div className='container'>
-        <button className='action' type='button' onClick={this.handleLogin}>Login</button>
-        <h1 className='title'>{this.state.message}</h1>
-        <div className='group'>
-          <input className='url' type='url' />
-          {/*<button className='action' type='button' onClick={this.handleClick}>Short</button>*/}
+      <div className='Home'>
+        <div className='lander'>
+          <h1><span style={{color: '#ffc107'}}>&#x26A1;</span>Serverless Next Notes</h1>
+          <p>A simple note taking app</p>
         </div>
         <style jsx>{`
-          div.container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-          }
 
-          h1.title {
-            color: white;
-            margin: auto auto 15px auto;
-          }
-
-          div.group {
-            display: flex;
-            flex-direction: row;
-            margin: 15px auto auto auto;
-          }
-
-          input.url {
-            background-color: #A1E0A2;
-            border: none;
-            color: white;
-            font-size: 32px;
-            padding: 10px;
+          .Home .lander {
+            padding: 80px 0;
             text-align: center;
           }
 
-          button.action {
-            background-color: #A1E0A2;
-            border: none;
-            color: white;
-            font-size: 32px;
-            margin-left: 2px;
+          .Home .lander h1 {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
           }
+
+          .Home .lander p {
+            color: #999;
+          }
+
         `}</style>
       </div>
     )
-  }
-
-  _handleLogin () {
-    client.Auth
-      .login({
-        username: 'admin',
-        password: 'admin'
-      })
-      .then(data => this.setState(
-        prevState => ({ ...prevState, token: data.token })
-      ))
   }
 }
