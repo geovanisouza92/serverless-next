@@ -11,16 +11,17 @@ export default class Login extends React.Component {
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      error: null
     }
   }
 
   render () {
     return (
       <div className='Login'>
-        <form onSubmit={ this.handleSubmit }>
+        <form onSubmit={this.handleSubmit}>
 
-          <div className='pt-form-group pt-large'>
+          <div className='pt-form-group'>
             <label
               className='pt-label'
               for='username'>
@@ -29,15 +30,15 @@ export default class Login extends React.Component {
 
             <div className='pt-form-content'>
               <input
-                className='pt-input'
+                className='pt-input pt-large'
                 id='username'
                 type='email'
-                value={ this.state.username }
-                onChange={ this.handleChange } />
+                value={this.state.username}
+                onChange={this.handleChange} />
             </div>
           </div>
 
-          <div className='pt-form-group pt-large'>
+          <div className='pt-form-group'>
             <label
               className='pt-label'
               for='password'>
@@ -46,18 +47,20 @@ export default class Login extends React.Component {
 
             <div className='pt-form-content'>
               <input
-                className='pt-input'
+                className='pt-input pt-large'
                 id='password'
                 type='password'
-                value={ this.state.password }
-                onChange={ this.handleChange } />
+                value={this.state.password}
+                onChange={this.handleChange} />
             </div>
           </div>
+
+          <div style={{ display: this.state.error ? 'block' : 'none', color: 'red' }}>{this.state.error}</div>
 
           <button
             className='pt-button pt-intent-primary'
             type='submit'
-            disabled={ !this.isFormValid() }>
+            disabled={!this.isFormValid()}>
             Login
           </button>
 
@@ -82,15 +85,29 @@ export default class Login extends React.Component {
 
   _handleChange (ev) {
     const { id, value } = ev.target
-    this.setState(prevState => ({ ...prevState, [id]: value }))
+    this.setState(prevState => ({ ...prevState, error: null, [id]: value }))
   }
 
   _handleSubmit (ev) {
     ev.preventDefault()
 
-    client.Auth.login(this.state)
-      .then(res => console.log(res))
-      .then(err => console.error(err))
+    const params = {
+      username: this.state.username,
+      password: this.state.password
+    }
+
+    client.Auth.login(params)
+      .then(res => {
+        if (res.error) {
+          this.setState(
+            prevState => ({ ...prevState, error: res.error })
+          )
+          return
+        }
+
+        // res.token
+        console.log(res.token)
+      })
   }
 
   _isFormValid () {
