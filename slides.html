@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Serverless Next</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <style type='text/css'>
+    body {
+      font-family: 'Droid Sans', 'Helvetica', sans-serif;
+      letter-spacing: -5px;
+      background: #000;
+      background-size: 100%;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    em,
+    a {
+      font-style: normal;
+      color: #ff0000;
+    }
+
+    a {
+      background: #34d0e7;
+      color: #000;
+      text-decoration: none;
+    }
+
+    /*img {
+      width: 100%;
+    }*/
+
+    div {
+      cursor: pointer;
+      cursor: hand;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      padding: 75px;
+      line-height: 97%;
+    }
+
+    div.center {
+      text-align: center;
+    }
+
+    div.imageText {
+      text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    notes {
+      display: none;
+    }
+
+    /* normally not good, but ok in context of full screen directional navigation */
+    :focus {
+      outline: 0;
+    }
+  </style>
+  <script type='text/javascript'>
+    window.onload = function() {
+      var s = document.getElementsByTagName('div'),
+        ti, i;
+      for (i = 0; i < s.length; i++) s[i].setAttribute('tabindex', 0);
+      if (!s.length) return;
+      var big = window.big = {
+        current: 0,
+        forward: fwd,
+        reverse: rev,
+        go: go,
+        length: s.length
+      };
+      function resize() {
+        var w = window.innerWidth,
+          h = window.innerHeight,
+          e = s[big.current];
+        e.style.fontSize = h + 'px';
+        function pass(cinch, start) {
+          for (var i = start; i > 0 && (e.offsetWidth > w || e.offsetHeight > h); i -= cinch) {
+            e.style.fontSize = i + 'px';
+          }
+          return i + cinch;
+        }
+        pass(2, pass(5, pass(10, h - 2)));
+        e.style.marginTop = (h - e.offsetHeight) / 2 + 'px';
+      }
+      function go(n) {
+        big.current = n;
+        var e = s[n],
+          t = parseInt(e.getAttribute('data-timeToNext') || 0, 10),
+          notes = e.getElementsByTagName('notes');
+        document.body.className = e.getAttribute('data-bodyclass') || '';
+        for (i = 0; i < s.length; i++) {
+          s[i].style.display = 'none';
+        }
+        e.style.display = 'inline';
+        e.focus();
+        // for (i = 0; typeof console === 'object' && i < notes.length; i++) {
+        //   console.log('%c%s: %s', 'padding:5px;font-family:serif;font-size:18px;line-height:150%;', n, notes[i].innerHTML.trim());
+        // }
+        if (e.firstChild && e.firstChild.nodeName === 'IMG') {
+        /*
+          document.body.style.backgroundImage = 'url("' + e.firstChild.src + '")';
+          e.firstChild.style.display = 'none';
+          if ('classList' in e) e.classList.add('imageText');
+        } else {
+          document.body.style.backgroundImage = '';
+          document.body.style.backgroundColor = e.style.backgroundColor;
+        */
+          e.style.display = 'flex';
+          e.style.width = '100%';
+          e.style.height = '100vh';
+          e.style.alignItems = 'center';
+          e.style.margin = 0;
+          e.style.padding = 0;
+          e.firstChild.style.margin = 'auto';
+          e.firstChild.style.maxHeight = '100vh';
+        }
+        // if (e.firstChild && e.firstChild.nodeName === 'UL') {
+        //   e.style.display = 'flex';
+        //   e.style.margin = 'auto';
+        //   e.firstChild.style.display = 'inline-block';
+        // }
+        if (ti !== undefined) window.clearInterval(ti);
+        if (t > 0) ti = window.setTimeout(fwd, t * 1000);
+        resize();
+        if (window.location.hash !== n) window.location.hash = n;
+        document.title = e.textContent || e.innerText;
+      }
+      document.onclick = function() {
+        go(++big.current % s.length);
+      };
+      function fwd() {
+        go(Math.min(s.length - 1, ++big.current));
+      }
+      function rev() {
+        go(Math.max(0, --big.current));
+      }
+      document.onkeydown = function(e) {
+        if (e.which === 39 || e.which === 34 || e.which === 40) fwd();
+        if (e.which === 37 || e.which === 33 || e.which === 38) rev();
+      };
+      document.ontouchstart = function(e) {
+        var x0 = e.changedTouches[0].pageX;
+        document.ontouchend = function(e2) {
+          var x1 = e2.changedTouches[0].pageX;
+          if (x1 - x0 < 0) fwd();
+          if (x1 - x0 > 0) rev();
+        };
+      };
+      function parse_hash() {
+        return Math.max(Math.min(s.length - 1,
+          parseInt(window.location.hash.substring(1), 10)), 0);
+      }
+      if (window.location.hash) big.current = parse_hash() || big.current;
+      window.onhashchange = function() {
+        i = parse_hash();
+        if (i !== big.current) go(i);
+      };
+      window.onresize = resize;
+      go(big.current);
+    };
+  </script>
+</head>
+
+<body>
+  <div>Olá!</div>
+
+  <div>Eu sou o <em>Geovani</em>!</div>
+
+  <div>Crawler de memes e desenvolvedor na <em>Serrabits</em>!</div>
+
+  <div>(nós fazemos software pro setor moveleiro)</div>
+
+  <div>Vim aqui falar sobre...</div>
+
+  <div><i>Buzzwords!</i></div>
+
+  <div><i>Palavras barulhentas</i> em inglês</div>
+
+  <div><img src="./assets/serverless_logo.png" alt="Logo framework Serverless"></div>
+
+  <div><img src="./assets/next_logo.png" alt="Logo framework Next.js"></div>
+
+  <div>Microserviços</div>
+
+  <div>DevOps</div>
+
+  <div>AWS Lambda + AWS API Gateway</div>
+
+  <div>ServerWHAT?</div>
+
+  <div><i>aka</i>: <em>"sem infraestrutura permanente"</em></div>
+
+  <div><img src="./assets/u1f631.svg.png" alt="Emoji grito" /></div>
+
+  <div>Aplicação tradicional:</div>
+
+  <div>
+    <ul>
+      <li>Você cria o <em>servidor</em></li>
+      <li>(configuração, manutenção, atualização, escala)</li>
+      <li>Web Server fica ouvindo requisições</li>
+      <li><em>...</em></li>
+      <li>WS recebe uma requisição</li>
+      <li>Aplicação processa a requisição</li>
+      <li>Aplicação devolve resposta para o WS</li>
+      <li>WS devolve a resposta e <em>espera</em> próxima requisição</li>
+    </ul>
+  </div>
+
+  <div><img src="./assets/nojinho.png" alt="Nojinho"></div>
+
+  <div>Serverless:</div>
+
+  <div>
+    <ul>
+      <li>API Gateway está sempre disponível</li>
+      <li><em>"Servidor"</em> é criado</li>
+      <li>Lambda processa a requisição</li>
+      <li>Lambda devolve resposta para o API Gateway</li>
+      <li><em>"Servidor"</em> é destruído</li>
+    </ul>
+  </div>
+
+  <div>~30ms!</div>
+
+  <div><img src="./assets/coracao.png" alt="Olhinhos de coração"></div>
+
+  <div>Vantagens?</div>
+
+  <div>Super <em>escalável</em>!</div>
+
+  <div>1 requisição = 1 servidor</div>
+
+  <div>100 requisições = 100 servidores</div>
+
+  <div>10000 requisições = 10000 servidores*</div>
+
+  <div>
+    <ul>
+      <li>Zero <em>manutenção</em>!</li>
+      <li>Zero load balancer</li>
+      <li>Zero brechas de segurança*</li>
+      <li>Zero <em>downtime</em></li>
+    </ul>
+  </div>
+
+  <div><img src="./assets/oremos.png" alt="Oremos"></div>
+
+  <div>Combina com microserviços</div>
+
+  <div>Diminui complexidade*</div>
+
+  <div>Super fácil para <em>começar</em>!</div>
+
+  <div>
+    <pre>$ npm install -g serverless
+$ serverless create -t aws-nodejs</pre>
+  </div>
+
+  <div>Começe a codar</div>
+
+  <div>Super fácil para <em>implantar</em>!</div>
+
+  <div><pre>$ serverless deploy</pre></div>
+
+  <div><img src="./assets/enjoy.png" alt="Aproveite"></div>
+
+  <div>Ordens de magnitude <em>mais barato</em>!</div>
+
+  <div>$0.000000002<em>/ms</em></div>
+
+  <div>Bônus 3.200.000 segundos <em>grátis</em>!</div>
+
+  <div><img src="./assets/dindin.png" alt="Diniero"></div>
+
+  <div><img src="./assets/eu-sabia-essa.jpg" alt="Eu sabia essa com maçãs - Chaves"></div>
+
+  <div>Sem vendor <em>lock-in</em>!</div>
+
+  <div>
+    <ul>
+      <li>Google Cloud Functions</li>
+      <li>Azure Cloud Functions</li>
+      <li>IBM / OpenWhisk</li>
+      <li>IronFunctions</li>
+      <li>Twilio Functions</li>
+      <li>...</li>
+    </ul>
+  </div>
+
+  <div><img src="./assets/catioro2.gif" alt="Catioro"></div>
+
+  <div>O que pode ser substituído com Serverless?</div>
+
+  <div>
+    <ul>
+      <li>Self-healing</li>
+      <li>Status page <a href="https://github.com/ks888/LambStatus">ks888/LambStatus</a></li>
+      <li>Auto scaling</li>
+      <li>Cron jobs</li>
+      <li>Cont...</li>
+    </ul>
+  </div>
+
+  <div>
+    </ul>
+      <li>Auto-resposta de chamados</li>
+      <li>Backups automáticos</li>
+      <li>Arquivamento de whatever</li>
+      <li>Gerador de PDF</li>
+      <li>Cont...</li>
+    </ul>
+  </div>
+
+  <div>
+    <ul>
+      <li>Chatbots</li>
+      <li>Texto para voz</li>
+      <li>Reconhecimento de voz</li>
+      <li>Reconhecimento de imagens</li>
+    </ul>
+  </div>
+
+  <div><img src="./assets/coracao.png" alt="Olhinhos de coração"></div>
+
+  <div>Desvantagens!</div>
+
+  <div>Warm-up</div>
+
+  <div>Monitoramento precisa melhorar</div>
+
+  <div><pre>TDD = cheap
+Integration = complex</pre></div>
+
+  <div><a href="https://github.com/geovanisouza92/serverless-next">github.com/geovanisouza92/serverless-next</a></div>
+
+  <div><em>Obrigado</em>! @geovanisouza92</div>
+
+  <div>Perguntas?</div>
+
+</body>
+
+</html>
