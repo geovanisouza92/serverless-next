@@ -1,12 +1,16 @@
 import React from 'react'
+import {withAuth} from '../lib/auth/service'
+import Layout from '../components/layout'
 
 export default class Index extends React.Component {
   render () {
     return (
-      <div className='Home'>
-        <div className='lander'>
-          <h1><span style={{color: '#ffc107'}}>&#x26A1;</span>Serverless Next Notes</h1>
-          <p>A simple note taking app</p>
+      <Layout>
+        <div className='Home'>
+          <div className='lander'>
+            <h1><span style={{color: '#ffc107'}}>&#x26A1;</span>Serverless Next Notes</h1>
+            <p>A simple note taking app</p>
+          </div>
         </div>
         <style jsx>{`
 
@@ -25,7 +29,7 @@ export default class Index extends React.Component {
           }
 
         `}</style>
-      </div>
+      </Layout>
     )
   }
 }

@@ -1,7 +1,10 @@
 import React from 'react'
+import Router from 'next/router'
+import {withAuth} from '../lib/auth/service'
 import client from '../lib/api/client'
+import Layout from '../components/layout'
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor (props) {
     super(props)
 
@@ -10,61 +13,75 @@ export default class Login extends React.Component {
     this.isFormValid = this._isFormValid.bind(this)
 
     this.state = {
+      returnUrl: Router.query.r,
       username: '',
       password: '',
       error: null
     }
   }
 
+  componentDidMount () {
+    if (!this.props.auth.isLoggedIn()) return
+
+    // Redirect
+    if (this.state.returnUrl) {
+      Router.push(this.state.returnUrl)
+    } else {
+      Router.push('/')
+    }
+  }
+
   render () {
     return (
-      <div className='Login'>
-        <form onSubmit={this.handleSubmit}>
+      <Layout>
+        <div className='Login'>
+          <form onSubmit={this.handleSubmit}>
 
-          <div className='pt-form-group'>
-            <label
-              className='pt-label'
-              for='username'>
-              Username
-            </label>
+            <div className='pt-form-group'>
+              <label
+                className='pt-label'
+                htmlFor='username'>
+                Username
+              </label>
 
-            <div className='pt-form-content'>
-              <input
-                className='pt-input pt-large'
-                id='username'
-                type='email'
-                value={this.state.username}
-                onChange={this.handleChange} />
+              <div className='pt-form-content'>
+                <input
+                  className='pt-input pt-large'
+                  id='username'
+                  type='email'
+                  value={this.state.username}
+                  onChange={this.handleChange} />
+              </div>
             </div>
-          </div>
 
-          <div className='pt-form-group'>
-            <label
-              className='pt-label'
-              for='password'>
-              Password
-            </label>
+            <div className='pt-form-group'>
+              <label
+                className='pt-label'
+                htmlFor='password'>
+                Password
+              </label>
 
-            <div className='pt-form-content'>
-              <input
-                className='pt-input pt-large'
-                id='password'
-                type='password'
-                value={this.state.password}
-                onChange={this.handleChange} />
+              <div className='pt-form-content'>
+                <input
+                  className='pt-input pt-large'
+                  id='password'
+                  type='password'
+                  value={this.state.password}
+                  onChange={this.handleChange} />
+              </div>
             </div>
-          </div>
 
-          <div style={{ display: this.state.error ? 'block' : 'none', color: 'red' }}>{this.state.error}</div>
+            <div style={{ display: this.state.error ? 'block' : 'none', color: 'red' }}>{this.state.error}</div>
 
-          <button
-            className='pt-button pt-intent-primary'
-            type='submit'
-            disabled={!this.isFormValid()}>
-            Login
-          </button>
+            <button
+              className='pt-button pt-intent-primary'
+              type='submit'
+              disabled={!this.isFormValid()}>
+              Login
+            </button>
 
-        </form>
+          </form>
+        </div>
         <style jsx>{`
 
           .Login {
@@ -79,7 +96,7 @@ export default class Login extends React.Component {
           }
 
         `}</style>
-      </div>
+      </Layout>
     )
   }
 
@@ -91,12 +108,7 @@ export default class Login extends React.Component {
   _handleSubmit (ev) {
     ev.preventDefault()
 
-    const params = {
-      username: this.state.username,
-      password: this.state.password
-    }
-
-    client.Auth.login(params)
+    this.props.auth.login(this.state.username, this.state.password)
       .then(res => {
         if (res.error) {
           this.setState(
@@ -105,8 +117,12 @@ export default class Login extends React.Component {
           return
         }
 
-        // res.token
-        console.log(res.token)
+        // Redirect
+        if (this.state.returnUrl) {
+          Router.push(this.state.returnUrl)
+        } else {
+          Router.push('/')
+        }
       })
   }
 
@@ -115,3 +131,5 @@ export default class Login extends React.Component {
       this.state.password.length > 0
   }
 }
+
+export default withAuth(Login)
