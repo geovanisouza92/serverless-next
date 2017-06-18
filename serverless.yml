@@ -61,6 +61,7 @@ functions:
     package:
       include:
         - ../.next/**
+        - ../static/**
 
   api:
     handler: aws/api.handler

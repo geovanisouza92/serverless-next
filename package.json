@@ -37,6 +37,7 @@
     "jest": "^20.0.4",
     "postcss-easy-import": "^2.1.0",
     "postcss-loader": "^2.0.5",
+    "postcss-url": "^7.0.0",
     "raw-loader": "^0.5.1",
     "serverless": "^1.14.0",
     "serverless-jest-plugin": "^0.1.4",
