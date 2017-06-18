@@ -34,7 +34,7 @@ export default class Layout extends React.Component {
             <div className='pt-navbar-group pt-align-right'>{
               this.state.isLoggedIn
               ? <button className='pt-button pt-minimal pt-icon-standard pt-icon-log-in' type='button' onClick={this.handleLogout}>Logout</button>
-              : <Link href='/login'><a className='pt-button pt-minimal pt-icon-standard pt-icon-log-in' role='button' tabIndex='0'>Login</a></Link>
+              : <Link prefetch href='/login'><a className='pt-button pt-minimal pt-icon-standard pt-icon-log-in' role='button' tabIndex='0'>Login</a></Link>
             }</div>
           </nav>
 

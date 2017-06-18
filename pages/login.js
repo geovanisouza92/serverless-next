@@ -3,6 +3,8 @@ import Router from 'next/router'
 import {withAuth} from '../lib/auth/service'
 import client from '../lib/api/client'
 import Layout from '../components/layout'
+import Form from '../components/form'
+import FormInput from '../components/form-input'
 
 class Login extends React.Component {
   constructor (props) {
@@ -13,6 +15,7 @@ class Login extends React.Component {
     this.isFormValid = this._isFormValid.bind(this)
 
     this.state = {
+      isLoading: false,
       returnUrl: Router.query.r,
       username: '',
       password: '',
@@ -35,52 +38,30 @@ class Login extends React.Component {
     return (
       <Layout>
         <div className='Login'>
-          <form onSubmit={this.handleSubmit}>
+          <Form
+            onSubmit={this.handleSubmit}
+            onValidate={this.isFormValid}
+            errorMessage={this.state.error}
+            isLoading={this.state.isLoading}
+            actionLabel='Login'>
 
-            <div className='pt-form-group'>
-              <label
-                className='pt-label'
-                htmlFor='username'>
-                Username
-              </label>
+            <FormInput
+              large='true'
+              name='username'
+              label='Username'
+              type='email'
+              value={this.state.username}
+              onChange={this.handleChange} />
 
-              <div className='pt-form-content'>
-                <input
-                  className='pt-input pt-large'
-                  id='username'
-                  type='email'
-                  value={this.state.username}
-                  onChange={this.handleChange} />
-              </div>
-            </div>
+            <FormInput
+              large='true'
+              name='password'
+              label='Password'
+              type='password'
+              value={this.state.password}
+              onChange={this.handleChange} />
 
-            <div className='pt-form-group'>
-              <label
-                className='pt-label'
-                htmlFor='password'>
-                Password
-              </label>
-
-              <div className='pt-form-content'>
-                <input
-                  className='pt-input pt-large'
-                  id='password'
-                  type='password'
-                  value={this.state.password}
-                  onChange={this.handleChange} />
-              </div>
-            </div>
-
-            <div style={{ display: this.state.error ? 'block' : 'none', color: 'red' }}>{this.state.error}</div>
-
-            <button
-              className='pt-button pt-intent-primary'
-              type='submit'
-              disabled={!this.isFormValid()}>
-              Login
-            </button>
-
-          </form>
+          </Form>
         </div>
         <style jsx>{`
 
@@ -88,11 +69,8 @@ class Login extends React.Component {
             display: flex;
             height: 100vh;
             padding: 60px 0;
-          }
-
-          .Login form {
-            margin: 0 auto;
-            max-width: 320px;
+            justify-content: center;
+            align-items: center;
           }
 
         `}</style>
@@ -108,11 +86,15 @@ class Login extends React.Component {
   _handleSubmit (ev) {
     ev.preventDefault()
 
+    this.setState(
+      prevState => ({ ...prevState, isLoading: true })
+    )
+
     this.props.auth.login(this.state.username, this.state.password)
       .then(res => {
         if (res.error) {
           this.setState(
-            prevState => ({ ...prevState, error: res.error })
+            prevState => ({ ...prevState, isLoading: false, error: res.error })
           )
           return
         }
