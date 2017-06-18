@@ -21,9 +21,12 @@ module.exports.handler = (event, context, callback) => {
   const token = event.authorizationToken && event.authorizationToken.split(' ')[1]
 
   // Verify token
-  if (authorization.isValid(token)) {
-    callback(null, generatePolicy('user', 'Allow', event.methodArn))
-  } else {
-    callback(null, generatePolicy('user', 'Deny', event.methodArn))
-  }
+  const effect = authorization.isValid(token)
+    ? 'Allow'
+    : 'Deny'
+
+  const policy = generatePolicy('user', effect, event.methodArn)
+  policy.context = authorization.getSession(token)
+
+  callback(null, policy)
 }
